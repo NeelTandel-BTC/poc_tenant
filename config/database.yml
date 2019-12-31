@@ -1,0 +1,13 @@
+default: &default
+  adapter: postgresql
+  host: localhost
+  username: postgres
+  password: root
+  pool: 5
+
+development:
+  <<: *default
+  database: poc_tenant
+
+test:
+  <<: *default
