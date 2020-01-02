@@ -10,4 +10,14 @@ development:
   database: poc_tenant
 
 test:
-  <<: *default
+  <<: *adapter: 'postgresql'
+# default: &default
+#   adapter: postgresql
+#   host: poc-multitenant.cxxmbla5slmc.us-east-2.rds.amazonaws.com
+#   port: 5432
+#   username: postgres
+#   password: postgres
+
+# development:
+#   <<: *default
+#   database: btc

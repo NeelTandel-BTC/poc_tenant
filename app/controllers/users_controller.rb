@@ -35,6 +35,10 @@ class UsersController < ApplicationController
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
     end
+  rescue Exception => e
+    binding.pry
+    'db:already created'
+    redirect_to root_path
   end
 
   # PATCH/PUT /users/1

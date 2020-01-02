@@ -18,6 +18,7 @@ Apartment.configure do |config|
   # A typical example would be a Customer or Tenant model that stores each Tenant's information.
   #
   config.excluded_models = %w[User]
+  # exist database
 
   # In order to migrate all of your Tenants you need to provide a list of Tenant names to Apartment.
   # You can make this dynamic by providing a Proc object to be called on migrations.
@@ -25,24 +26,21 @@ Apartment.configure do |config|
   # - an array of strings representing each Tenant name.
   # - a hash which keys are tenant names, and values custom db config (must contain all key/values required in database.yml)
   #
-  # config.tenant_names = lambda{ User.pluck :subdomain }
+  config.tenant_names = lambda{ User.pluck :subdomain }
   # config.tenant_names = ['tenant1', 'tenant2']
-  # config.tenant_names = {
-  #   'tenant1' => {
-  #     adapter: 'postgresql',
-  #     host: 'some_server',
-  #     port: 5555,
-  #     database: 'postgres' # this is not the name of the tenant's db
-  #                          # but the name of the database to connect to before creating the tenant's db
-  #                          # mandatory in postgresql
-  #   },
-  #   'tenant2' => {
-  #     adapter:  'postgresql',
-  #     database: 'postgres' # this is not the name of the tenant's db
-  #                          # but the name of the database to connect to before creating the tenant's db
-  #                          # mandatory in postgresql
-  #   }
-  # }
+  config.with_multi_server_setup = true
+  config.tenant_names = {
+    'btc' => {
+      adapter: 'postgresql',
+      host: 'poc-multitenant.cxxmbla5slmc.us-east-2.rds.amazonaws.com',
+      port: 5432,
+      username: 'postgres',
+      password: 'postgres',
+      database: 'btc' # this is not the name of the tenant's db
+                           # but the name of the database to connect to before creating the tenant's db
+                           # mandatory in postgresql
+    }
+  }
   def database_exists?
     ActiveRecord::Base.connection
   rescue ActiveRecord::NoDatabaseError
@@ -50,25 +48,23 @@ Apartment.configure do |config|
   else
     true
   end
-  config.with_multi_server_setup = true
-  binding.pry
 
-  config.tenant_names = lambda do
-    # if database_exists?
-      # return unless ActiveRecord::Base.connection.table_exists?('users')
+  # config.tenant_names = lambda do
+  #   # if database_exists?
+  #     # return unless ActiveRecord::Base.connection.table_exists?('users')
 
-      User.all.each_with_object({}) do |tenant, hash|
-        hash[tenant.subdomain] = {
-          adapter: 'postgresql',
-          host: 'localhost',
-          port: tenant.port,
-          database: tenant.db_name,
-          username: 'postgres',
-          password: 'root'
-        }
-      end
-    # end
-  end
+  #     User.all.each_with_object({}) do |tenant, hash|
+  #       hash[tenant.subdomain] = {
+  #         adapter: 'postgresql',
+  #         host: 'localhost',
+  #         port: tenant.port,
+  #         database: tenant.db_name,
+  #         username: 'postgres',
+  #         password: 'root'
+  #       }
+  #     end
+  #   # end
+  # end
 
   #
   # PostgreSQL:
