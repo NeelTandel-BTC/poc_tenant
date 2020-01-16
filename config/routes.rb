@@ -11,5 +11,10 @@ Rails.application.routes.draw do
   end
   resources :users
   resources :projects
+
+  scope ':tenant_name' do
+    resources :projects
+  end
+
   root 'users#new'
 end
