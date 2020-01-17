@@ -26,7 +26,6 @@ Apartment.configure do |config|
   # - an array of strings representing each Tenant name.
   # - a hash which keys are tenant names, and values custom db config (must contain all key/values required in database.yml)
   #
-
   config.tenant_names = lambda{ User.pluck :subdomain }
   # config.tenant_names = ['tenant1', 'tenant2']
   # config.with_multi_server_setup = true
@@ -118,7 +117,7 @@ end
 # Setup a custom Tenant switching middleware. The Proc should return the name of the Tenant that
 # you want to switch to.
 # Rails.application.config.middleware.use Apartment::Elevators::Generic, lambda { |request|
-#   request.host.split('.').first
+#   request.path.split('/').second
 # }
 
 # Rails.application.config.middleware.use Apartment::Elevators::Domain

@@ -9,12 +9,9 @@ Rails.application.routes.draw do
   constraints SubdomainConstraint do
     resources :users
   end
-  resources :users
   resources :projects
+  resources :users
 
-  scope ':tenant_name' do
-    resources :projects
-  end
 
   root 'users#new'
 end

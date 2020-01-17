@@ -9,8 +9,6 @@ development:
   <<: *default
   database: poc_tenant
 
-test:
-  <<: *adapter: 'postgresql'
 # default: &default
 #   adapter: postgresql
 #   host: poc-multitenant.cxxmbla5slmc.us-east-2.rds.amazonaws.com
